@@ -47,7 +47,7 @@ initializeDiscord() {
 
 	const response =
 		await fetch(
-			".proxy/api/token",
+			"/api/token",
 			{
 				method: "POST",
 
