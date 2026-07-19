@@ -47,7 +47,7 @@ initializeDiscord() {
 
 	const response =
 		await fetch(
-			`${import.meta.env.VITE_SERVER_URL}/api/token`,
+			"/api/token",
 			{
 				method: "POST",
 
