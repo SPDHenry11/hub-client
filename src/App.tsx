@@ -1,27 +1,57 @@
 import { useEffect, useState } from "react";
 import { getDiscordSdk } from "./DiscordManager";
 
+import Header from "./components/Header";
+import MinigameSelection from "./components/MinigameSelection";
+import GameOverlay from "./components/GameOverlay";
+
 function App() {
 
-	const [discordReady, setDiscordReady] = useState(false);
+	const [
+		discordReady,
+		setDiscordReady,
+	] = useState(false);
+
+	const [
+		isDiscord,
+		setIsDiscord,
+	] = useState(false);
+
+	const [
+		activeGameUrl,
+		setActiveGameUrl,
+	] = useState<string | null>(
+		null
+	);
 
 	useEffect(() => {
 
 		async function initializeDiscord() {
+
 			try {
-				const discordSdk = getDiscordSdk();
+
+				const discordSdk =
+					getDiscordSdk();
 
 				await discordSdk.ready();
 
-				console.log("Discord SDK ready!");
+				console.log(
+					"Discord SDK ready!"
+				);
 
+				setIsDiscord(true);
 				setDiscordReady(true);
 			}
 			catch (error) {
-				console.error(
-					"Discord SDK initialization failed:",
+
+				console.warn(
+					"Running outside Discord.",
 					error
 				);
+
+				// Allow local browser testing
+				setIsDiscord(false);
+				setDiscordReady(true);
 			}
 		}
 
@@ -29,15 +59,46 @@ function App() {
 
 	}, []);
 
+	if (!discordReady) {
+		return (
+			<div>
+				Initializing Discord...
+			</div>
+		);
+	}
+
 	return (
-		<div>
-			<h1>HUB</h1>
+		<div className="app">
+
+			<Header />
 
 			{
-				discordReady
-					? <p>Discord SDK initialized successfully!</p>
-					: <p>Waiting for Discord...</p>
+				!isDiscord &&
+				<div>
+					Local Development Mode
+				</div>
 			}
+
+			<MinigameSelection
+				onLaunchGame={
+					setActiveGameUrl
+				}
+			/>
+
+			{
+				activeGameUrl &&
+				<GameOverlay
+					url={
+						activeGameUrl
+					}
+					onClose={() =>
+						setActiveGameUrl(
+							null
+						)
+					}
+				/>
+			}
+
 		</div>
 	);
 }
