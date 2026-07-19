@@ -26,7 +26,7 @@ function App() {
 
 	useEffect(() => {
 
-		async function initializeDiscord() {
+		async function initialize() {
 
 			try {
 
@@ -42,13 +42,12 @@ function App() {
 					error
 				);
 
-				// Allow local browser testing
 				setIsDiscord(false);
 				setDiscordReady(true);
 			}
 		}
 
-		initializeDiscord();
+		initialize();
 
 	}, []);
 
