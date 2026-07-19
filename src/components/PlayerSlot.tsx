@@ -1,4 +1,5 @@
 import "./PlayerSlot.css";
+import { getDiscordSdk } from "../DiscordManager";
 
 export type Player = {
 	id: string;
@@ -24,6 +25,7 @@ function PlayerSlot(
                     player-slot
                     invite-slot
                 "
+                onClick={handleInvite}
             >
 
                 <div
@@ -65,6 +67,25 @@ function PlayerSlot(
 
 		</div>
 	);
+}
+
+async function handleInvite() {
+
+	try {
+
+		const discordSdk =
+			getDiscordSdk();
+
+		await discordSdk.commands
+			.openInviteDialog();
+	}
+	catch (error) {
+
+		console.error(
+			"Failed to open invite dialog:",
+			error
+		);
+	}
 }
 
 export default PlayerSlot;
