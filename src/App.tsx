@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getDiscordSdk } from "./DiscordManager";
+import { initializeDiscord } from "./DiscordManager";
 
 import Header from "./components/Header";
 import MinigameSelection from "./components/MinigameSelection";
@@ -30,14 +30,7 @@ function App() {
 
 			try {
 
-				const discordSdk =
-					getDiscordSdk();
-
-				await discordSdk.ready();
-
-				console.log(
-					"Discord SDK ready!"
-				);
+				await initializeDiscord();
 
 				setIsDiscord(true);
 				setDiscordReady(true);
