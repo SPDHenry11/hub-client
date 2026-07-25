@@ -116,6 +116,7 @@ subscribeToParticipants(
 							participant.id,
 
 						username:
+							participant.global_name ||
 							participant.username,
 
 						avatar:
