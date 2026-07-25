@@ -5,6 +5,8 @@ import Header from "./components/Header";
 import MinigameSelection from "./components/MinigameSelection";
 import GameOverlay from "./components/GameOverlay";
 
+import type { Player } from "./components/PlayerSlot";
+
 function App() {
 
 	const [
@@ -23,6 +25,8 @@ function App() {
 	] = useState<string | null>(
 		null
 	);
+
+	const players: Player[] = [];
 
 	useEffect(() => {
 
@@ -62,7 +66,11 @@ function App() {
 	return (
 		<div className="app">
 
-			<Header />
+			<Header
+				players={
+					players
+				}
+			/>
 
 			{
 				!isDiscord &&

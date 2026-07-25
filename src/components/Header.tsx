@@ -6,9 +6,13 @@ import PlayerSlot,
 }
 from "./PlayerSlot";
 
-function Header() {
+type Props = {
+	players: Player[];
+};
 
-	const players: Player[] = [];
+function Header({
+	players,
+}: Props) {
 
 	return (
 		<header
