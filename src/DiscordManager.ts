@@ -1,6 +1,10 @@
 import {
-	DiscordSDK
+	DiscordSDK,
+	Events,
+	type Types,
 } from "@discord/embedded-app-sdk";
+
+import type { Player } from "./components/PlayerSlot";
 
 let discordSdk:
 	DiscordSDK | null = null;
@@ -87,4 +91,55 @@ getDiscordSdk() {
 	}
 
 	return discordSdk;
+}
+
+export function
+subscribeToParticipants(
+	callback: (players: Player[]) => void
+) {
+
+	const discordSdk =
+		getDiscordSdk();
+
+	async function
+	updateParticipants(
+		participants:
+			Types.GetActivityInstanceConnectedParticipantsResponse
+	) {
+
+		const players =
+			participants.participants.map(
+				participant => {
+
+					return {
+						id:
+							participant.id,
+
+						username:
+							participant.username,
+
+						avatar:
+							participant.avatar
+								? `https://cdn.discordapp.com/avatars/${participant.id}/${participant.avatar}.png`
+								: `https://cdn.discordapp.com/embed/avatars/${(BigInt(participant.id) >> 22n) % 6n}.png`,
+
+						score: 0,
+					};
+				}
+			);
+
+		callback(players);
+	}
+
+	discordSdk.subscribe(
+		Events.ACTIVITY_INSTANCE_PARTICIPANTS_UPDATE,
+		updateParticipants
+	);
+
+	return () => {
+		discordSdk.unsubscribe(
+			Events.ACTIVITY_INSTANCE_PARTICIPANTS_UPDATE,
+			updateParticipants
+		);
+	};
 }

@@ -1,5 +1,8 @@
 import { useEffect, useState } from "react";
-import { initializeDiscord } from "./DiscordManager";
+import {
+	initializeDiscord,
+	subscribeToParticipants,
+} from "./DiscordManager";
 
 import Header from "./components/Header";
 import MinigameSelection from "./components/MinigameSelection";
@@ -26,15 +29,26 @@ function App() {
 		null
 	);
 
-	const players: Player[] = [];
+	const [
+		players,
+		setPlayers,
+	] = useState<Player[]>([]);
 
 	useEffect(() => {
+
+		let unsubscribe:
+			(() => void) | undefined;
 
 		async function initialize() {
 
 			try {
 
 				await initializeDiscord();
+
+				unsubscribe =
+					subscribeToParticipants(
+						setPlayers
+					);
 
 				setIsDiscord(true);
 				setDiscordReady(true);
@@ -52,6 +66,13 @@ function App() {
 		}
 
 		initialize();
+
+		return () => {
+
+			if (unsubscribe) {
+				unsubscribe();
+			}
+		};
 
 	}, []);
 
