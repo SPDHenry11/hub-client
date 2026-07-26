@@ -10,6 +10,8 @@ import GameOverlay from "./components/GameOverlay";
 
 import type { Player } from "./components/PlayerSlot";
 
+import "./App.css";
+
 function App() {
 
 	const [
