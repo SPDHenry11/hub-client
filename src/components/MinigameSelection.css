@@ -1,0 +1,174 @@
+.minigame-selection {
+	flex: 1;
+
+	width: 100%;
+
+	padding: 16px;
+
+	box-sizing: border-box;
+
+	overflow-y: auto;
+}
+
+
+/* ========================= */
+/* Minigame Grid */
+/* ========================= */
+
+.minigame-grid {
+	width: 100%;
+
+	display: grid;
+
+	grid-template-columns:
+		repeat(
+			auto-fill,
+			minmax(
+				220px,
+				1fr
+			)
+		);
+
+	gap: 16px;
+
+	align-items: start;
+}
+
+
+/* ========================= */
+/* Minigame Card */
+/* ========================= */
+
+.minigame-card {
+	width: 100%;
+
+	aspect-ratio: 1 / 1.15;
+
+	background:
+		linear-gradient(
+			180deg,
+			#313338 0%,
+			#27292d 100%
+		);
+
+	border: 2px solid #42454d;
+
+	border-radius: 18px;
+
+	display: flex;
+	flex-direction: column;
+
+	align-items: center;
+	justify-content: flex-start;
+
+	padding: 12px;
+
+	box-sizing: border-box;
+
+	cursor: pointer;
+
+	overflow: hidden;
+
+	user-select: none;
+
+	transition:
+		transform 0.2s ease,
+		background 0.2s ease,
+		border-color 0.2s ease,
+		box-shadow 0.2s ease;
+}
+
+.minigame-card:hover {
+	transform:
+		translateY(-3px);
+
+	border-color: #5865f2;
+
+	box-shadow:
+		0px 8px 24px
+		rgba(
+			88,
+			101,
+			242,
+			0.25
+		);
+}
+
+.minigame-card:active {
+	transform:
+		translateY(-1px);
+}
+
+
+/* ========================= */
+/* Minigame Image */
+/* ========================= */
+
+.minigame-card-image {
+	width: 100%;
+
+	aspect-ratio: 1;
+
+	object-fit: cover;
+
+	flex-shrink: 0;
+
+	border-radius: 16px;
+
+	border: 2px solid #5b5f69;
+
+	display: block;
+}
+
+
+/* ========================= */
+/* Minigame Title */
+/* ========================= */
+
+.minigame-card-title {
+	margin-top: 14px;
+
+	width: 100%;
+
+	font-size: 1rem;
+
+	font-weight: 600;
+
+	line-height: 1.2;
+
+	color: #d7dadf;
+
+	text-align: center;
+
+	overflow: hidden;
+
+	text-overflow: ellipsis;
+
+	white-space: nowrap;
+}
+
+
+/* ========================= */
+/* Responsive */
+/* ========================= */
+
+@media (max-width: 700px) {
+
+	.minigame-selection {
+		padding: 16px;
+	}
+
+	.minigame-grid {
+		grid-template-columns:
+			repeat(
+				auto-fill,
+				minmax(
+					180px,
+					1fr
+				)
+			);
+
+		gap: 16px;
+	}
+
+}
