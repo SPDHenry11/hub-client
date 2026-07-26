@@ -18,11 +18,6 @@ function App() {
 	] = useState(false);
 
 	const [
-		isDiscord,
-		setIsDiscord,
-	] = useState(false);
-
-	const [
 		activeGameUrl,
 		setActiveGameUrl,
 	] = useState<string | null>(
@@ -50,17 +45,15 @@ function App() {
 						setPlayers
 					);
 
-				setIsDiscord(true);
 				setDiscordReady(true);
 			}
 			catch (error) {
 
-				console.warn(
-					"Running outside Discord.",
+				console.error(
+					"Failed to initialize Discord:",
 					error
 				);
 
-				setIsDiscord(false);
 				setDiscordReady(true);
 			}
 		}
@@ -92,6 +85,11 @@ function App() {
 					players
 				}
 			/>
+
+			<div
+				className="section-separator"
+			/>
+
 			<MinigameSelection
 				onLaunchGame={
 					setActiveGameUrl

@@ -5,3 +5,12 @@
 	display: flex;
 	flex-direction: column;
 }
+.section-separator {
+	width: 100%;
+
+	height: 1px;
+
+	background: #42454d;
+
+	flex-shrink: 0;
+}
