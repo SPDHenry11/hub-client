@@ -92,14 +92,6 @@ function App() {
 					players
 				}
 			/>
-
-			{
-				!isDiscord &&
-				<div>
-					Local Development Mode
-				</div>
-			}
-
 			<MinigameSelection
 				onLaunchGame={
 					setActiveGameUrl
