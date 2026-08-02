@@ -1,63 +1,55 @@
 import "./MinigameSelection.css";
 
-export type Minigame = {
+type Minigame = {
 	id: string;
 	title: string;
 	image: string;
-	url: string;
+};
+
+type StoreCard = {
+	id: string;
+	title: string;
+	image: string;
 };
 
 type Props = {
-	onLaunchGame: (url: string) => void;
+	onLaunchGame: (
+		minigameId: string
+	) => void;
+
+	onOpenStore: () => void;
 };
 
 const minigames: Minigame[] = [
+
 	{
 		id: "cups-and-balls",
 		title: "Cups & Balls",
 		image: "/minigames/cups-and-balls.png",
-		url: "https://example.com/cups-and-balls",
 	},
-		{
-		id: "cups-and-balls",
-		title: "Cups & Balls",
-		image: "/minigames/cups-and-balls.png",
-		url: "https://example.com/cups-and-balls",
+
+	{
+		id: "memory-match",
+		title: "Memory Match",
+		image: "/minigames/memory-match.png",
 	},
-		{
-		id: "cups-and-balls",
-		title: "Cups & Balls",
-		image: "/minigames/cups-and-balls.png",
-		url: "https://example.com/cups-and-balls",
-	},
-		{
-		id: "cups-and-balls",
-		title: "Cups & Balls",
-		image: "/minigames/cups-and-balls.png",
-		url: "https://example.com/cups-and-balls",
-	},
-		{
-		id: "cups-and-balls",
-		title: "Cups & Balls",
-		image: "/minigames/cups-and-balls.png",
-		url: "https://example.com/cups-and-balls",
-	},
-		{
-		id: "cups-and-balls",
-		title: "Cups & Balls",
-		image: "/minigames/cups-and-balls.png",
-		url: "https://example.com/cups-and-balls",
-	},
-		{
-		id: "cups-and-balls",
-		title: "Cups & Balls",
-		image: "/minigames/cups-and-balls.png",
-		url: "https://example.com/cups-and-balls",
+
+	{
+		id: "snake",
+		title: "Snake",
+		image: "/minigames/snake.png",
 	},
 ];
 
+const store: StoreCard = {
+	id: "store",
+	title: "Store",
+	image: "/minigames/store.png",
+};
+
 function MinigameSelection({
 	onLaunchGame,
+	onOpenStore,
 }: Props) {
 
 	return (
@@ -72,24 +64,21 @@ function MinigameSelection({
 				{
 					minigames.map(
 						minigame => (
+
 							<button
 								key={
 									minigame.id
 								}
-								className="
-									minigame-card
-								"
+								className="minigame-card"
 								onClick={() =>
 									onLaunchGame(
-										minigame.url
+										minigame.id
 									)
 								}
 							>
 
 								<img
-									className="
-										minigame-card-image
-									"
+									className="minigame-card-image"
 									src={
 										minigame.image
 									}
@@ -99,9 +88,7 @@ function MinigameSelection({
 								/>
 
 								<div
-									className="
-										minigame-card-title
-									"
+									className="minigame-card-title"
 								>
 									{
 										minigame.title
@@ -112,6 +99,33 @@ function MinigameSelection({
 						)
 					)
 				}
+
+				<button
+					className="minigame-card"
+					onClick={
+						onOpenStore
+					}
+				>
+
+					<img
+						className="minigame-card-image"
+						src={
+							store.image
+						}
+						alt={
+							store.title
+						}
+					/>
+
+					<div
+						className="minigame-card-title"
+					>
+						{
+							store.title
+						}
+					</div>
+
+				</button>
 
 			</div>
 

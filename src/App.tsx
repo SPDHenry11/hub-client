@@ -1,8 +1,15 @@
 import { useEffect, useState } from "react";
+
 import {
 	initializeDiscord,
 	subscribeToParticipants,
+	getActivityInstanceId,
 } from "./DiscordManager";
+
+import {
+	initializeSession,
+	launchMinigame,
+} from "./SessionManager";
 
 import Header from "./components/Header";
 import MinigameSelection from "./components/MinigameSelection";
@@ -42,6 +49,10 @@ function App() {
 
 				await initializeDiscord();
 
+				await initializeSession(
+					getActivityInstanceId()
+				);
+
 				unsubscribe =
 					subscribeToParticipants(
 						setPlayers
@@ -71,6 +82,36 @@ function App() {
 
 	}, []);
 
+	async function handleLaunchGame(
+		minigameId: string
+	) {
+
+		try {
+
+			const result =
+				await launchMinigame(
+					minigameId
+				);
+
+			setActiveGameUrl(
+				result.url
+			);
+		}
+		catch (error) {
+
+			console.error(
+				"Failed to launch minigame:",
+				error
+			);
+		}
+	}
+
+	function handleOpenStore() {
+
+		// TODO:
+		// Open the store panel.
+	}
+
 	if (!discordReady) {
 		return (
 			<div>
@@ -94,7 +135,10 @@ function App() {
 
 			<MinigameSelection
 				onLaunchGame={
-					setActiveGameUrl
+					handleLaunchGame
+				}
+				onOpenStore={
+					handleOpenStore
 				}
 			/>
 

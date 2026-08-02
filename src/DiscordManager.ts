@@ -11,6 +11,9 @@ let discordSdk:
 
 let initialized = false;
 
+let activityInstanceId:
+	string | null = null;
+
 export async function
 initializeDiscord() {
 
@@ -76,6 +79,9 @@ initializeDiscord() {
 			access_token,
 		});
 
+	activityInstanceId =
+		discordSdk.instanceId;
+
 	initialized = true;
 
 	return discordSdk;
@@ -94,6 +100,18 @@ getDiscordSdk() {
 }
 
 export function
+getActivityInstanceId() {
+
+	if (!activityInstanceId) {
+		throw new Error(
+			"Activity instance ID not available."
+		);
+	}
+
+	return activityInstanceId;
+}
+
+export function
 subscribeToParticipants(
 	callback: (players: Player[]) => void
 ) {
@@ -109,24 +127,22 @@ subscribeToParticipants(
 
 		const players =
 			participants.participants.map(
-				participant => {
+				participant => ({
 
-					return {
-						id:
-							participant.id,
+					id:
+						participant.id,
 
-						username:
-							participant.global_name ||
-							participant.username,
+					username:
+						participant.global_name ||
+						participant.username,
 
-						avatar:
-							participant.avatar
-								? `https://cdn.discordapp.com/avatars/${participant.id}/${participant.avatar}.png`
-								: `https://cdn.discordapp.com/embed/avatars/${(BigInt(participant.id) >> 22n) % 6n}.png`,
+					avatar:
+						participant.avatar
+							? `https://cdn.discordapp.com/avatars/${participant.id}/${participant.avatar}.png`
+							: `https://cdn.discordapp.com/embed/avatars/${(BigInt(participant.id) >> 22n) % 6n}.png`,
 
-						score: 0,
-					};
-				}
+					score: 0,
+				})
 			);
 
 		callback(players);
@@ -138,6 +154,7 @@ subscribeToParticipants(
 	);
 
 	return () => {
+
 		discordSdk.unsubscribe(
 			Events.ACTIVITY_INSTANCE_PARTICIPANTS_UPDATE,
 			updateParticipants
