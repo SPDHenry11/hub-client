@@ -79,6 +79,10 @@ initializeDiscord() {
 			access_token,
 		});
 
+		console.log("Discord SDK:", discordSdk);
+		console.log("Instance ID:", (discordSdk as any).instanceId);
+		console.log("Config:", (discordSdk as any).config);
+		console.log("Platform:", (discordSdk as any).platform);
 	activityInstanceId =
 		discordSdk.instanceId;
 
