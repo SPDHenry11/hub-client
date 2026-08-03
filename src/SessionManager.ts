@@ -1,15 +1,15 @@
 const API_BASE = "/api";
 
-let currentSessionId:
+let currentInstanceId:
 	string | null = null;
 
 export async function
 initializeSession(
-	sessionId: string
+	instanceId: string
 ) {
 
-	currentSessionId =
-		sessionId;
+	currentInstanceId =
+		instanceId;
 
 	const response =
 		await fetch(
@@ -24,7 +24,7 @@ initializeSession(
 
 				body:
 					JSON.stringify({
-						sessionId,
+						instanceId,
 					}),
 			}
 		);
@@ -37,15 +37,15 @@ initializeSession(
 }
 
 export function
-getSessionId() {
+getInstanceId() {
 
-	if (!currentSessionId) {
+	if (!currentInstanceId) {
 		throw new Error(
 			"Session has not been initialized."
 		);
 	}
 
-	return currentSessionId;
+	return currentInstanceId;
 }
 
 export async function
@@ -66,8 +66,8 @@ launchMinigame(
 
 				body:
 					JSON.stringify({
-						sessionId:
-							getSessionId(),
+						instanceId:
+							getInstanceId(),
 
 						minigameId,
 					}),
@@ -98,8 +98,8 @@ leaveMinigame() {
 
 			body:
 				JSON.stringify({
-					sessionId:
-						getSessionId(),
+					instanceId:
+						getInstanceId(),
 				}),
 		}
 	);
@@ -110,7 +110,7 @@ getSessionState() {
 
 	const response =
 		await fetch(
-			`${API_BASE}/session/${getSessionId()}`
+			`${API_BASE}/session/${getInstanceId()}`
 		);
 
 	if (!response.ok) {
