@@ -1,5 +1,5 @@
 import "./PlayerSlot.css";
-import { getDiscordSdk } from "../DiscordManager";
+import { discordSdk } from "../DiscordManager";
 
 export type Player = {
 	id: string;
@@ -73,10 +73,7 @@ async function handleInvite() {
 
 	try {
 
-		const discordSdk =
-			getDiscordSdk();
-
-		await discordSdk.commands
+		await discordSdk?.commands
 			.openInviteDialog();
 	}
 	catch (error) {

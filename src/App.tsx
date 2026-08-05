@@ -3,7 +3,6 @@ import { useEffect, useState } from "react";
 import {
 	initializeDiscord,
 	subscribeToParticipants,
-	getActivityInstanceId,
 } from "./DiscordManager";
 
 import {
@@ -49,9 +48,7 @@ function App() {
 
 				await initializeDiscord();
 
-				await initializeSession(
-					getActivityInstanceId()
-				);
+				await initializeSession();
 
 				unsubscribe =
 					subscribeToParticipants(

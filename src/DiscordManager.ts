@@ -6,20 +6,14 @@ import {
 
 import type { Player } from "./components/PlayerSlot";
 
-let discordSdk:
+export let discordSdk:
 	DiscordSDK | null = null;
 
-let initialized = false;
-
-let activityInstanceId:
+export let activityInstanceId:
 	string | null = null;
 
 export async function
 initializeDiscord() {
-
-	if (initialized) {
-		return discordSdk;
-	}
 
 	if (!discordSdk) {
 		discordSdk =
@@ -82,42 +76,13 @@ initializeDiscord() {
 	activityInstanceId =
 		discordSdk.instanceId;
 
-	initialized = true;
-
 	return discordSdk;
-}
-
-export function
-getDiscordSdk() {
-
-	if (!discordSdk) {
-		throw new Error(
-			"Discord SDK not initialized."
-		);
-	}
-
-	return discordSdk;
-}
-
-export function
-getActivityInstanceId() {
-
-	if (!activityInstanceId) {
-		throw new Error(
-			"Activity instance ID not available."
-		);
-	}
-
-	return activityInstanceId;
 }
 
 export function
 subscribeToParticipants(
 	callback: (players: Player[]) => void
 ) {
-
-	const discordSdk =
-		getDiscordSdk();
 
 	async function
 	updateParticipants(
@@ -148,14 +113,14 @@ subscribeToParticipants(
 		callback(players);
 	}
 
-	discordSdk.subscribe(
+	discordSdk?.subscribe(
 		Events.ACTIVITY_INSTANCE_PARTICIPANTS_UPDATE,
 		updateParticipants
 	);
 
 	return () => {
 
-		discordSdk.unsubscribe(
+		discordSdk?.unsubscribe(
 			Events.ACTIVITY_INSTANCE_PARTICIPANTS_UPDATE,
 			updateParticipants
 		);

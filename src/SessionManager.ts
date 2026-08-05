@@ -1,15 +1,14 @@
+import {
+	activityInstanceId,
+} from "./DiscordManager";
+
 const API_BASE = "/api";
 
-let currentInstanceId:
-	string | null = null;
+let socket:
+	WebSocket | null = null;
 
 export async function
-initializeSession(
-	instanceId: string
-) {
-
-	currentInstanceId =
-		instanceId;
+initializeSession() {
 
 	const response =
 		await fetch(
@@ -24,7 +23,8 @@ initializeSession(
 
 				body:
 					JSON.stringify({
-						instanceId,
+						instanceId:
+							activityInstanceId,
 					}),
 			}
 		);
@@ -34,18 +34,56 @@ initializeSession(
 			"Failed to initialize session."
 		);
 	}
-}
 
-export function
-getInstanceId() {
+	// =========================
+	// Test WebSocket Connection
+	// =========================
 
-	if (!currentInstanceId) {
-		throw new Error(
-			"Session has not been initialized."
+	socket =
+		new WebSocket(
+			`${location.origin.replace(
+				/^http/,
+				"ws"
+			)}${API_BASE}/session/ws?instanceId=${activityInstanceId}`
 		);
-	}
 
-	return currentInstanceId;
+	socket.onopen =
+		() => {
+
+			console.log(
+				"WebSocket connected."
+			);
+		};
+
+	socket.onmessage =
+		event => {
+
+			console.log(
+				"WebSocket message:",
+				event.data
+			);
+		};
+
+	socket.onerror =
+		error => {
+
+			console.error(
+				"WebSocket error:",
+				error
+			);
+		};
+
+	socket.onclose =
+		event => {
+
+			console.log(
+				"WebSocket closed:",
+				event.code,
+				event.reason
+			);
+
+			socket = null;
+		};
 }
 
 export async function
@@ -67,7 +105,7 @@ launchMinigame(
 				body:
 					JSON.stringify({
 						instanceId:
-							getInstanceId(),
+							activityInstanceId,
 
 						minigameId,
 					}),
@@ -84,33 +122,11 @@ launchMinigame(
 }
 
 export async function
-leaveMinigame() {
-
-	await fetch(
-		`${API_BASE}/session/leave`,
-		{
-			method: "POST",
-
-			headers: {
-				"Content-Type":
-					"application/json",
-			},
-
-			body:
-				JSON.stringify({
-					instanceId:
-						getInstanceId(),
-				}),
-		}
-	);
-}
-
-export async function
 getSessionState() {
 
 	const response =
 		await fetch(
-			`${API_BASE}/session/${getInstanceId()}`
+			`${API_BASE}/session/${activityInstanceId}`
 		);
 
 	if (!response.ok) {
