@@ -12,20 +12,9 @@ initializeSession() {
 
 	const response =
 		await fetch(
-			`${API_BASE}/session`,
+			`${API_BASE}/session/${activityInstanceId}`,
 			{
 				method: "POST",
-
-				headers: {
-					"Content-Type":
-						"application/json",
-				},
-
-				body:
-					JSON.stringify({
-						instanceId:
-							activityInstanceId,
-					}),
 			}
 		);
 
@@ -44,7 +33,7 @@ initializeSession() {
 			`${location.origin.replace(
 				/^http/,
 				"ws"
-			)}${API_BASE}/session/ws?instanceId=${activityInstanceId}`
+			)}${API_BASE}/session/${activityInstanceId}/ws`
 		);
 
 	socket.onopen =
@@ -93,7 +82,7 @@ launchMinigame(
 
 	const response =
 		await fetch(
-			`${API_BASE}/session/minigame`,
+			`${API_BASE}/session/${activityInstanceId}/minigame`,
 			{
 				method: "POST",
 
@@ -104,9 +93,6 @@ launchMinigame(
 
 				body:
 					JSON.stringify({
-						instanceId:
-							activityInstanceId,
-
 						minigameId,
 					}),
 			}
